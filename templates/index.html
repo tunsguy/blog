@@ -1,0 +1,256 @@
+{% extends 'main.html' %}
+{% block content %}
+{% load static %}
+<body>
+   
+    <!-- SITE WRAPPER -->
+    <div id="eskimo-site-wrapper">
+        <!-- MAIN CONTAINER -->
+      
+        <main id="eskimo-main-container">
+            <div class="container">
+               
+                <!-- TOP ICONS -->
+                <ul class="eskimo-top-icons">
+                    <li id="eskimo-panel-icon">
+                        <a href="#eskimo-panel" class="eskimo-panel-open"><i class="fa fa-bars"></i></a>
+                    </li>
+                    <li id="eskimo-search-icon">
+                        <a id="eskimo-open-search" href="#"><i class="fa fa-search"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+                <!-- SLIDER -->
+                
+                <div class="eskimo-carousel-container eskimo-bg-loader">
+                    <div id="eskimo-post-slider" class="eskimo-slider">
+                        <!-- SLIDE 1 -->
+                        {% for post in posts%}
+                        <div>
+                            <a class="eskimo-slider-img" href="{% url 'post' post.id %}"></a>
+                            <ul class="eskimo-slider-image-meta eskimo-image-meta-post">
+                                <li><a href="{% url 'post' post.id %}"><span class="badge badge-default">{{post.created|date}}</span></a></li>
+                                <li><a href="{% url 'category' %}?s={{post.name}}"><span class="badge badge-default">{{post.name}}</span></a></li>
+                            </ul>
+                            <div class="clearfix"></div>
+                            <img height="100" width="100" src="{{post.imageurl}}" alt="{{post.name}}" />
+                            <div class="eskimo-slider-desc">
+                                <div class="eskimo-slider-desc-inner">
+                                    <h2 class="card-title">{{post.name}}</h2>
+                                    <p>{{post.description|truncatewords:20}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- BLOG POSTS -->
+                <!-- POST 1 -->
+                {% for post in posts%}
+                <div class="card card-horizontal">
+                    <div class="card-body">
+                        <div class="card-horizontal-left">
+                            <div class="card-category">
+                                <a href="{% url 'category' %}?s={{post.topic.name}}">{{post.topic.name}}</a> </div>
+                            <h3 class="card-title"><a href="{% url 'post' post.id %}">{{post.name}}</a></h3>
+                            <div class="card-excerpt">
+                               
+                                <p>{{post.description|truncatewords:30}}</p>
+                            </div>
+                            <div class="card-horizontal-meta">
+                                <div class="eskimo-author-meta">
+                                    By <a class="author-meta" href="{% url 'author' post.host.id %}">{{post.host.username}}</a>
+                                </div>
+                                <div class="eskimo-date-meta">
+                                    <a href="{% url 'post' post.id %}">{{post.created|date}}</a>
+                                </div>
+                                <div class="eskimo-reading-meta">{{post.read}} min read</div>
+                            </div>
+                        </div>
+                        <div class="card-horizontal-right" data-img="{{post.imageurl}}">
+                            <a class="card-featured-img" href="{% url 'post' post.id %}"></a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- VIEW ALL BUTTON -->
+                <div class="eskimo-view-more">
+                    <a class="btn btn-default" href="{% url 'blog' %}">VIEW ALL POSTS</a>
+                </div>
+                
+                <!-- DIVIDER -->
+                <hr class="section-divider" />
+
+                <!-- CAROUSEL -->
+                <div class="eskimo-widget-title">
+                    <h3 class="eskimo-carousel-title"><span>POPULAR POSTS</span></h3>
+                </div>
+
+                <div class="eskimo-carousel-container">
+                    <div class="eskimo-carousel-view-more">
+                        <a href="{% url 'blog' %}">VIEW ALL</a>
+                    </div>
+
+                    <div id="eskimo-post-carousel" class="eskimo-carousel">
+                        <!-- CAROUSEL ITEM 1 -->
+                        {% for post in posts %}
+                        <div>
+                            <div class="card-masonry card-small">
+                                <div class="card">
+                                    <a href="{% url 'post' post.id %}">
+                                        <img class="card-vertical-img" src="{{post.imageurl}}" alt="{{post.name}}" />   
+                                    </a>
+                                    <div class="card-border">
+                                        <div class="card-body">
+                                            <div class="card-category">
+                                                <a href="{% url 'post' post.id %}">{{post.created|date}}</a>
+                                            </div>
+                                            <h5 class="card-title"><a href="{% url 'post' post.id %}">{{post.name}}</a></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </main>
+       
+        <!-- FOOTER -->
+        <footer id="eskimo-footer">
+            <div class="container">
+                <div class="row eskimo-footer-wrapper">
+                    <!-- FOOTER WIDGET 1 -->
+                    <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                        <h5 class="eskimo-title-with-border"><span>About Me</span></h5>
+                        <p>{{user.bio|truncatewords:20}}</p>
+                        <p><a href="{% url 'about' user.id %}" class="btn btn-default">Read More</a></p>
+                    </div>                
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- GO TO TOP BUTTON -->
+    <a id="eskimo-gototop" href="#"><i class="fa fa-chevron-up"></i></a>
+    <!-- SLIDE PANEL OVERLAY -->
+    <div id="eskimo-overlay"></div>
+    <!-- SLIDE PANEL -->
+    <div id="eskimo-panels">
+        <aside id="eskimo-panel" class="eskimo-panel">
+            <div class="eskimo-panel-inner">
+                <!-- CLOSE SLIDE PANEL BUTTON -->
+                <a href="#" class="eskimo-panel-close"><i class="fa fa-times"></i></a>
+                <!-- AUTHOR BOX -->
+                <div class="eskimo-author-box eskimo-widget">
+                    <div class="eskimo-author-img">
+                        <img src="{{user.avatar.url}}" alt="JOHN DOE" />
+                    </div>
+                    <h3><span>{{user.name}}</span></h3>
+                    <p class="eskimo-author-subtitle">{{user.work}}</p>
+                    <p class="eskimo-author-description">{{user.bio|truncatewords:20}}</p>
+                    <div class="eskimo-author-box-btn">
+                        <a class="btn btn-default" href="{% url 'about' user.id %}">CONTACT ME</a>
+                    </div>
+                </div>
+                <!-- RECENT POSTS -->
+                <div class="eskimo-recent-entries eskimo-widget">
+                    <h5 class="eskimo-title-with-border"><span>Recent Posts</span></h5>
+                    <ul>
+                        {% for post in posts %}
+                        <li>
+                            <a href="{% url 'post' post.id %}">{{post.name}}</a>
+                            <span class="post-date">{{post.created|date}}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- CATEGORIES -->
+                <div class="eskimo-categories eskimo-widget">
+                    <h5 class="eskimo-title-with-border"><span>Categories</span></h5>
+                    <ul>
+                        {% for topic in topics %}
+                        <li>
+                            <a href="{% url 'category' %}?s={{topic.name}}" title="">{{topic.name}}</a> <span class="badge badge-pill badge-default">{{topic.post_set.all.count}}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </aside>
+    </div>
+    <!-- FULLSCREEN SEARCH -->
+    <div id="eskimo-fullscreen-search">
+        <div id="eskimo-fullscreen-search-content">
+            <a href="#" id="eskimo-close-search"><i class="fa fa-times"></i></a>
+            <form role="search" method="get" action="" class="eskimo-lg-form">
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-lg" placeholder="Enter a keyword..." name="s" />
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- JS FILES -->
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/salvattore.min.js' %}"></script>
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/panel.js' %}"></script>
+    <script src="{% static 'js/reading-position-indicator.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    <!-- POST SLIDER -->
+    <script>
+        (function($) {
+            "use strict";
+            $(document).ready(function() {
+                $('#eskimo-post-slider').slick({
+                    autoplay: true,
+                    autoplaySpeed: 5000,
+                    slidesToScroll: 1,
+                    adaptiveHeight: true,
+                    slidesToShow: 1,
+                    arrows: true,
+                    dots: false,
+                    fade: true
+                });
+            });
+            $(window).on('load', function() {
+                $('#eskimo-post-slider').css('opacity', '1');
+                $('#eskimo-post-slider').parent().removeClass('eskimo-bg-loader');
+            });
+        })(jQuery);
+    </script>
+    <!-- POST CAROUSEL -->
+    <script>
+        (function($) {
+            "use strict";
+            $(document).ready(function() {
+                $('#eskimo-post-carousel').slick({
+                    infinite: false,
+                    slidesToScroll: 1,
+                    arrows: true,
+                    dots: false,
+                    slidesToShow: 3,
+                    responsive: [{
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: 2
+                        }
+                    }, {
+                        breakpoint: 576,
+                        settings: {
+                            slidesToShow: 1
+                        }
+                    }]
+
+                });
+                $('#eskimo-post-carousel').css('opacity', '1');
+            });
+        })(jQuery);
+    </script>
+</body>
+{% endblock %}

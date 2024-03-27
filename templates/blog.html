@@ -1,0 +1,147 @@
+{% extends 'main.html' %}
+{% block content %}
+{% load static %}
+<body>
+    <!-- SITE WRAPPER -->
+    <div id="eskimo-site-wrapper">
+        <!-- MAIN CONTAINER -->
+        <main id="eskimo-main-container">
+            <div class="container">
+                <!-- TOP ICONS -->
+                <ul class="eskimo-top-icons">
+                    <li id="eskimo-panel-icon">
+                        <a href="#eskimo-panel" class="eskimo-panel-open"><i class="fa fa-bars"></i></a>
+                    </li>
+                    <li id="eskimo-search-icon">
+                        <a id="eskimo-open-search" href="#"><i class="fa fa-search"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+                <!-- PAGE TITLE -->
+                <div class="eskimo-page-title">
+                    <h1 class="no-border">Blog </h1>
+                </div>
+                <!-- BLOG POSTS -->
+                <!-- POST 1 -->
+                
+                {% for post in page_obj %}
+                <div class="card card-horizontal">
+                  
+                    <div class="card-body">
+                        <div class="card-horizontal-left">
+                            <div class="card-category">
+                                <a href="{% url 'category' %}?s={{post.topic.name}}">{{post.topic.name}}</a>
+                            </div>
+                            <h3 class="card-title"><a href="{% url 'post' user.id %}">{{post.name}}</a></h3>
+                            <div class="card-excerpt">
+                                <p>{{post.description|truncatewords:30}}</p>
+                            </div>
+                            <div class="card-horizontal-meta">
+                                <div class="eskimo-author-meta">
+                                    By <a class="author-meta" href="{% url 'author' user.id %}">{{post.host.username}}</a>
+                                </div>
+                                <div class="eskimo-date-meta">
+                                    <a href="{% url 'post' post.id %}">{{post.created|date}}</a>
+                                </div>
+                                <div class="eskimo-reading-meta">{{post.read}} min read</div>
+                            </div>
+                        </div>
+                        <div class="card-horizontal-right" data-img="{{post.imageurl}}">
+                            <a class="card-featured-img" href="{% url 'post' post.id %}"></a>
+                        </div>
+                    </div>
+                  
+                </div>
+                {% endfor %}
+                <!-- PAGINATION -->
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                        {% endif %}
+                
+                        <span class="current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </span>
+                
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">next</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </main>
+        <!-- FOOTER -->
+        <footer id="eskimo-footer">
+            <div class="container">
+                <div class="row eskimo-footer-wrapper">
+                    <!-- FOOTER WIDGET 1 -->
+                    <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                        <h5 class="eskimo-title-with-border"><span>About Me</span></h5>
+                        <p>{{user.bio|truncatewords:20}}</p>
+                        <p><a href="{% url 'about' user.id %}" class="btn btn-default">Read More</a></p>
+                    </div>                
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- GO TO TOP BUTTON -->
+    <a id="eskimo-gototop" href="#"><i class="fa fa-chevron-up"></i></a>
+    <!-- SLIDE PANEL OVERLAY -->
+    <div id="eskimo-overlay"></div>
+    <!-- SLIDE PANEL -->
+    <div id="eskimo-panels">
+        <aside id="eskimo-panel" class="eskimo-panel">
+            <div class="eskimo-panel-inner">
+                <!-- CLOSE SLIDE PANEL BUTTON -->
+                <a href="#" class="eskimo-panel-close"><i class="fa fa-times"></i></a>
+                <!-- AUTHOR BOX -->
+                <div class="eskimo-author-box eskimo-widget">
+                    <div class="eskimo-author-img">
+                        <img src="{{user.avatar.url}}" alt="JOHN DOE" />
+                    </div>
+                    <h3><span>{{user.name}}</span></h3>
+                    <p class="eskimo-author-subtitle">{{user.work}}</p>
+                    <p class="eskimo-author-description">{{user.bio|truncatewords:20}}</p>
+                    <div class="eskimo-author-box-btn">
+                        <a class="btn btn-default" href="{% url 'about' user.id %}">CONTACT ME</a>
+                    </div>
+                </div>
+                <!-- RECENT POSTS -->
+                <div class="eskimo-recent-entries eskimo-widget">
+                    <h5 class="eskimo-title-with-border"><span>Recent Posts</span></h5>
+                    <ul>
+                        {% for post in posts %}
+                        <li>
+                            <a href="{% url 'post' post.id %}">{{post.name}}</a>
+                            <span class="post-date">{{post.created|date}}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- CATEGORIES -->
+                <div class="eskimo-categories eskimo-widget">
+                    <h5 class="eskimo-title-with-border"><span>Categories</span></h5>
+                    <ul>
+                        {% for topic in topics %}
+                        <li>
+                            <a href="{% url 'category' %}?s={{topic.name}}" title="">{{topic.name}}</a> <span class="badge badge-pill badge-default">{{topic.post_set.all.count}}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            
+            </div>
+        </aside>
+    </div>
+    <!-- JS FILES -->
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/panel.js' %}"></script>
+    <script src="{% static 'js/reading-position-indicator.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+</body>
+{% endblock %}

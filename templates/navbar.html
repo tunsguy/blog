@@ -1,0 +1,41 @@
+{% load static %}
+
+
+ <!-- SIDEBAR -->
+<div id="eskimo-sidebar">
+    <div id="eskimo-sidebar-wrapper" class="d-flex align-items-start flex-column h-100 w-100">
+        <!-- LOGO -->
+        <div id="" class="container">
+            <a class="header__logo" href="{% url 'index' %}">
+                <img height="60" width="60" src="{% static 'images/logo.svg' %}" class="Tunsblog" alt="Tunsblog" />
+                <h2><i>Tuns Blog</i></h2>
+            </a>
+        </div>
+        <!-- MENU CONTAINER -->
+        <div id="eskimo-sidebar-cell" class="w-100">
+            <!-- MOBILE MENU BUTTON -->
+            <div id="eskimo-menu-toggle">MENU</div>
+            <!-- MENU -->
+            <nav id="eskimo-main-menu" class="menu-main-menu-container">
+                <ul class="eskimo-menu-ul">
+                    <li><a href="{% url 'index' %}">Home</a>
+                        <ul class="sub-menu">
+                            <li><a href="{% url 'index' %}">Demo 1</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">About Me</a>
+                        <ul class="sub-menu">
+                            <li><a href="{% url 'about' user.id %}">Demo 1</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Blog</a>
+                        <ul class="sub-menu">
+                            <li><a href="{% url 'blog' %}">Full Width</a></li>
+ 
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
